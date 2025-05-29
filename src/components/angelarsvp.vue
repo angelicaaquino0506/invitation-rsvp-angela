@@ -19,12 +19,33 @@
           </label>
         </div>
   
-        <p v-if="isEighteenthCandle && attendance === 'Yes'" class="invitation-text dialog-special-guest">
+        <!-- <p v-if="isEighteenthCandle && attendance === 'Yes'" class="invitation-text dialog-special-guest">
+          You are one of the 18 candles, {{ eighteenthCandleName }}!
+        </p> -->
+
+        <p v-if="personalInfo.position === 'One of the 18 candles' && attendance === 'Yes'"
+          class="invitation-text dialog-special-guest">
           You are one of the 18 candles, {{ eighteenthCandleName }}!
         </p>
+
+        <p v-else-if="personalInfo.position === 'One of the 18 Roses' && attendance === 'Yes'"
+          class="invitation-text dialog-special-guest">
+          You are one of the 18 Roses, {{ eighteenthRosesName }}!
+        </p>
+
+        <p v-else-if="personalInfo.position === 'One of the 18 candles and 18 Roses' && attendance === 'Yes'"
+          class="invitation-text dialog-special-guest">
+          You are one of the 18 candles and 18 Roses, {{ eighteenthCandleName || eighteenthRosesName }}!
+          </p>
+
+        <p v-else-if="attendance === 'Yes' && personalInfo.position === ''" class="invitation-text">
+            Welcome to the party!
+        </p>
+
   
         <p class="invitation-text">Bring your enthusiasm and festive spirit! We hope you can make it and celebrate with us.</p>
   
+        <!-- <button @click="savePersonalInfo" type="submit" aria-label="Submit RSVP">Submit RSVP</button> -->
         <button type="submit" aria-label="Submit RSVP">Submit RSVP</button>
       </form>
       <div v-if="thankYouMessage" class="thankyou-message" role="alert" aria-live="polite">
@@ -34,109 +55,252 @@
   </template>
   
   <script setup lang="ts">
-  import { ref, watch } from 'vue';
-  
-  // Reactive state
-  const name = ref<string>('');
-  const attendance = ref<string>('');
-  const thankYouMessage = ref<string>('');
-  const eightCandel = ref<{ name: string; value: string }[]>([
-    { name: 'Ms. Angelica Aquino', value: 'Angelica Aquino' },
-    { name: 'Mrs. Marlyn Aquino', value: 'Marlyn Aquino' },
-    { name: 'Ms. Louerie Kay Cincua', value: 'Louerie Kay Cincua' },
-    { name: 'Ms. Luisa Canales', value: 'Luisa Canales' },
-    { name: 'Mrs. Liezel Cincua', value: 'Liezel Cincua' },
-    { name: 'Ms. Jenifer Aytona', value: 'Jenifer Aytona' },
-    { name: 'Mrs. Clarissa Dionaldo', value: 'Clarissa Dionaldo' },
-    { name: 'Ms. Charlmie de Torres', value: 'Charlmie de Torres' },
-    { name: 'Mrs. Joan Magno', value: 'Joan Magno' },
-    { name: 'Mrs. Jessica Aspiras', value: 'Jessica Aspiras' },
-    { name: 'Mrs. Jen-Jen Valdez', value: 'Jen-Jen Valdez' },
-    { name: 'Mrs. Floser Nepomuceno', value: 'Floser Nepomuceno' },
-    { name: 'Ms. Mila Ansagay', value: 'Mila Ansagay' },
-    { name: 'Dra. Weng Catanaoan', value: 'Weng Catanaoan' },
-    { name: 'Mrs. Rowena Datinginoo', value: 'Rowena Datinginoo' },
-    { name: 'Ms. Ma. Zarah Muli', value: 'Zarah Muli' },
-    { name: 'Mrs. Thelma Muli', value: 'Thelma Muli' },
-    { name: 'Mr. Angelo Muli', value: 'Angelo Muli' },
-  ]);
-  const isEighteenthCandle = ref<boolean>(false);
-  const eighteenthCandleName = ref<string>('');
-  
-  // Methods
-  const findPerson = () => {
-    const inputNameLower = name.value.toLowerCase();
-    const person = eightCandel.value.find(r => r.value.toLowerCase().includes(inputNameLower));
-  
-    if (person) {
-      isEighteenthCandle.value = true;
-      eighteenthCandleName.value = person.name;
-    } else {
-      isEighteenthCandle.value = false;
-      eighteenthCandleName.value = '';
+import { onMounted, reactive, ref, computed } from 'vue';
+import { doc, setDoc, collection, getDocs } from 'firebase/firestore';
+import { db } from '@/firebase';
+
+// Reactive state for form inputs
+const name = ref<string>('');
+const attendance = ref<string>('');
+const thankYouMessage = ref<string>('');
+const eighteenCandel = ref<{ name: string; value: string }[]>([
+  { name: 'Ms. Angelica Aquino', value: 'Angelica Aquino' },
+  { name: 'Mrs. Marlyn Aquino', value: 'Marlyn Aquino' },
+  { name: 'Ms. Louerie Kay Cincua', value: 'Louerie Kay Cincua' },
+  { name: 'Ms. Luisa Canales', value: 'Luisa Canales' },
+  { name: 'Mrs. Liezel Cincua', value: 'Liezel Cincua' },
+  { name: 'Ms. Jenifer Aytona', value: 'Jenifer Aytona' },
+  { name: 'Mrs. Clarissa Dionaldo', value: 'Clarissa Dionaldo' },
+  { name: 'Ms. Charlmie de Torres', value: 'Charlmie de Torres' },
+  { name: 'Mrs. Joan Magno', value: 'Joan Magno' },
+  { name: 'Mrs. Jessica Aspiras', value: 'Jessica Aspiras' },
+  { name: 'Mrs. Jen-Jen Valdez', value: 'Jen-Jen Valdez' },
+  { name: 'Mrs. Floser Nepomuceno', value: 'Floser Nepomuceno' },
+  { name: 'Ms. Mila Ansagay', value: 'Mila Ansagay' },
+  { name: 'Dra. Weng Catanaoan', value: 'Weng Catanaoan' },
+  { name: 'Mrs. Rowena Datinginoo', value: 'Rowena Datinginoo' },
+  { name: 'Ms. Ma. Zarah Muli', value: 'Zarah Muli' },
+  { name: 'Mrs. Thelma Muli', value: 'Thelma Muli' },
+  { name: 'Mr. Angelo Muli', value: 'Angelo Muli' },
+]);
+const eighteeRoses = ref<{ name: string; value: string }[]>([
+  { name: 'Mr. Arjay magno', value: 'Arjay magno' },
+  { name: 'Mr. Reynaldo Aquino', value: 'Reynaldo Aquino' },
+  { name: 'Mr. Renz Gonzales', value: 'Renz Gonzales' },
+  { name: 'Mr. Ronald Villio', value: 'Ronald Villio' },
+  { name: 'Mr. Efren Rodriguez', value: 'Efren Rodriguez' },
+  { name: 'Mr. Ralph Louren Cincua', value: 'Ralph Louren Cincua' },
+  { name: 'Mr. Wingard Baraquiel', value: 'Wingard Baraquiel' },
+  { name: 'Mr. Rexie Van Galanta', value: 'Rexie Van Galanta' },
+  { name: 'Mr. John Lumbis', value: 'John Lumbis' },
+  { name: 'Mr. Aaron Josh Corbita', value: 'Aaron Josh Corbita' },
+  { name: 'Mr. Marvy James Bayani', value: 'Marvy James Bayani' },
+  { name: 'Mr. Jhon Ryan Dellosmas', value: 'Jhon Ryan Dellosmas' },
+  { name: 'Mr. Wilfredo Andres', value: 'Wilfredo Andres' },
+  { name: 'Mr. Jasper Panganiban', value: 'Jasper Panganiban' },
+  { name: 'Mr. Prince Charles Giron', value: 'Prince Charles Giron' },
+  { name: 'Ms. Ma. Zarah Muli', value: 'Zarah Muli' },
+  { name: 'Mrs. Maria Thelma Muli', value: 'Maria Thelma Muli' },
+  { name: 'Mr. Angelo Muli', value: 'Angelo Muli' },
+]);
+const isEighteenthCandle = ref<boolean>(false);
+const eighteenthCandleName = ref<string>('');
+const isEighteenthRoses = ref<boolean>(false);
+const eighteenthRosesName = ref<string>('');
+
+// Reactive object to hold the data to be saved to Firebase
+const personalInfo = reactive({
+  name: '',
+  attended: '',
+  position: ''
+});
+
+// Function to find if the entered name is one of the 18 candles
+// const findPerson = () => {
+//   const inputNameLower = name.value.toLowerCase();
+//   const person = eighteenCandel.value.find(r => r.value.toLowerCase().includes(inputNameLower));
+//   const person18Roses = eighteeRoses.value.find(r => r.value.toLowerCase().includes(inputNameLower));
+
+//   if (person) {
+//     isEighteenthCandle.value = true;
+//     eighteenthCandleName.value = person.name;
+//     personalInfo.position = 'One of the 18 candles';
+//   } else {
+//     isEighteenthCandle.value = false;
+//     eighteenthCandleName.value = '';
+//     personalInfo.position = '';
+//   }
+//   if (person18Roses) {
+//     isEighteenthRoses.value = true;
+//     eighteenthRosesName.value = person18Roses.name;
+//     personalInfo.position = 'One of the 18 Roses';
+//   } else {
+//     isEighteenthRoses.value = false;
+//     eighteenthRosesName.value = '';
+//     personalInfo.position = '';
+//   }
+// };
+
+const findPerson = () => {
+  const inputNameLower = name.value.toLowerCase();
+
+  // Find in both lists independently
+  const personAsCandle = eighteenCandel.value.find(r => r.value.toLowerCase().includes(inputNameLower));
+  const personAsRose = eighteeRoses.value.find(r => r.value.toLowerCase().includes(inputNameLower));
+
+  // --- Reset all relevant values first ---
+  isEighteenthCandle.value = false;
+  eighteenthCandleName.value = '';
+  isEighteenthRoses.value = false;
+  eighteenthRosesName.value = '';
+  personalInfo.position = ''; // Always reset position
+
+  // --- Determine position and set flags ---
+  if (personAsCandle) {
+    isEighteenthCandle.value = true;
+    eighteenthCandleName.value = personAsCandle.name;
+    personalInfo.position = 'One of the 18 candles';
+  }
+
+  if (personAsRose) {
+    isEighteenthRoses.value = true;
+    eighteenthRosesName.value = personAsRose.name;
+    // If the person was also a candle, and you want 'Roses' to override
+    // or if the person is only a rose.
+    // If you want 'Candle' to take precedence for personalInfo.position,
+    // then you might want to put this 'else if' or handle it differently.
+    if (!personAsCandle) { // Only update position if not already set by a candle
+      personalInfo.position = 'One of the 18 Roses';
     }
-  };
-  
-  const handleNameInput = () => {
-    if (attendance.value === 'Yes') {
-      findPerson();
-    } else {
-      isEighteenthCandle.value = false;
-      eighteenthCandleName.value = '';
-    }
-  };
-  
-  const handleAttendanceChange = (value: string) => {
-    attendance.value = value;
-  
-    if (attendance.value === 'Yes') {
-      if (!name.value) {
-        alert('Please enter your name first.');
-        attendance.value = '';
-        isEighteenthCandle.value = false;
-        eighteenthCandleName.value = '';
-      } else {
-        findPerson();
-      }
-    } else {
-      isEighteenthCandle.value = false;
-      eighteenthCandleName.value = '';
-    }
-  };
-  
-  const handleSubmit = () => {
-    if (!name.value || !attendance.value) {
-      alert('Please enter your name and select attendance.');
-      return;
-    }
-  
-    thankYouMessage.value = `Thank you, ${name.value}! that you will ${attendance.value === 'Yes' ? 'attend' : 'not attend'} has been received.`;
-  
-    // Clear the input fields after submission
-    name.value = '';
-    attendance.value = '';
-  
-    // Reset candle status after submission
+  }
+
+  // Optional: If you want a combined position when found in both
+  if (personAsCandle && personAsRose) {
+    personalInfo.position = 'One of the 18 candles and 18 Roses';
+  } else if (personAsCandle) {
+      personalInfo.position = 'One of the 18 candles';
+  } else if (personAsRose) {
+      personalInfo.position = 'One of the 18 Roses';
+  }
+};
+
+// Handle input for the name field
+const handleNameInput = () => {
+
+  thankYouMessage.value = '';
+  eighteenthCandleName.value = '';
+
+  isEighteenthCandle.value = false;
+  isEighteenthRoses.value = false;
+  eighteenthRosesName.value = '';
+  personalInfo.position = '';
+  attendance.value = '';
+  if (attendance.value === 'Yes') {
+    findPerson();
+  } else {
     isEighteenthCandle.value = false;
     eighteenthCandleName.value = '';
-  };
-  
-  // Watchers (optional, but good practice for dependencies)
-  // You could also use a computed property for `isEighteenthCandle` if it strictly depends on `name` and `attendance`
-  // However, given your `handleNameInput` and `handleAttendanceChange` methods,
-  // the current imperative approach is fine.
-  // Example of a watcher if you preferred that pattern:
-  /*
-  watch([name, attendance], () => {
-    if (attendance.value === 'Yes' && name.value) {
-      findPerson();
-    } else {
+    eighteenthRosesName.value = '';
+    personalInfo.position = ''; // Clear position if attendance is not 'Yes'
+  }
+};
+
+// Handle attendance radio button change
+const handleAttendanceChange = (value: string) => {
+  attendance.value = value;
+
+  if (attendance.value === 'Yes') {
+    if (!name.value) {
+      alert('Please enter your name first.');
+      attendance.value = ''; // Reset attendance if name is not entered
       isEighteenthCandle.value = false;
       eighteenthCandleName.value = '';
+      isEighteenthRoses.value = false;
+    eighteenthRosesName.value = '';
+      personalInfo.position = '';
+    } else {
+      findPerson();
     }
-  });
-  */
-  </script>
+  } else {
+    isEighteenthCandle.value = false;
+    eighteenthCandleName.value = '';
+    isEighteenthRoses.value = false;
+    eighteenthRosesName.value = '';
+    personalInfo.position = '';
+    
+  }
+};
+
+// Function to save personal info to Firebase
+const savePersonalInfo = async () => {
+  try {
+    const userId = "user_" + Date.now();
+    const userDocRef = doc(db, "users", userId);
+
+    // Prepare data to save, ensuring 'createdAt' is always included
+    const dataToSave = {
+      name: personalInfo.name,
+      attended: personalInfo.attended,
+      position: personalInfo.position,
+      createdAt: new Date()
+    };
+
+    await setDoc(userDocRef, dataToSave);
+    console.log("Document successfully written!");
+  } catch (error) {
+    alert("Error saving RSVP: " + error);
+  }
+};
+
+// Handle form submission
+const handleSubmit = async () => {
+  if (!name.value || !attendance.value) {
+    alert('Please enter your name and select attendance.');
+    return;
+  }
+
+  // Set personalInfo reactive object values
+  personalInfo.name = name.value;
+  personalInfo.attended = attendance.value === 'Yes' ? 'Attending' : 'Not Attending';
+  // The 'position' is already set by findPerson when name or attendance changes
+
+  await savePersonalInfo(); // Save to Firebase
+
+  thankYouMessage.value = `Thank you, ${name.value}! Your RSVP that you will ${attendance.value === 'Yes' ? 'attend' : 'not attend'} has been received.`;
+
+  // Clear the input fields after submission
+  name.value = '';
+  attendance.value = '';
+
+  // Reset candle status and personalInfo after submission
+  isEighteenthCandle.value = false;
+  eighteenthCandleName.value = '';
+  personalInfo.name = '';
+  personalInfo.attended = '';
+  personalInfo.position = '';
+};
+
+// Fetch users (RSVPs) on component mount (for demonstration/debugging)
+const usersList = ref<any[]>([]);
+const fetchUsers = async () => {
+  usersList.value = []; // Clear previous data
+  try {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    const fetchedUsers: any[] = [];
+    querySnapshot.forEach((doc) => {
+      fetchedUsers.push({ id: doc.id, ...doc.data() });
+    });
+    usersList.value = fetchedUsers;
+    console.log("Fetched Users:", usersList.value);
+  } catch (error: any) {
+    console.error("Error fetching RSVPs: ", error);
+  }
+};
+
+onMounted(() => {
+  fetchUsers();
+});
+</script>
   
   <style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap');
@@ -151,12 +315,14 @@
     /* font-family: 'Poppins', sans-serif; */
     background: linear-gradient(135deg, #ffe6f0 0%, #ffcce3 100%);
     color: #660033;
+    /* min-height: 100vh; */
     min-height: 100vh;
     display: flex;
     padding: 2rem;
   }
   
   .container {
+    /* background: #ffd2e4cc; */
     background: #ffd2e4cc;
     max-width: 450px;
     width: 100%;
@@ -167,6 +333,7 @@
     padding: 2.5rem 2rem 3rem 2rem;
     text-align: center;
     overflow: hidden;
+    
   
   }
   
@@ -176,6 +343,7 @@
     font-size: 3.6rem;
     color: #e60073;
     margin-bottom: 0;
+    margin-top: 0;
     letter-spacing: 2px;
     text-shadow: 0 0 8px #ffffff, 0 0 15px #ffbaef;
     font-style: italic; 
