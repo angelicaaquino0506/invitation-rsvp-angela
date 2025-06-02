@@ -41,7 +41,12 @@
         <p v-else-if="personalInfo.position === 'One of the 18th candles and 18th Roses' && attendance === 'Yes'"
           class="invitation-text dialog-special-guest">
           You are one of the 18th candles and 18th Roses, {{ eighteenthCandleName || eighteenthRosesName }}!
-          </p>
+        </p>
+
+        <p v-else-if="personalInfo.position === 'One of the 18th Shot and 18th Roses' && attendance === 'Yes'"
+          class="invitation-text dialog-special-guest">
+          You are One of the 18th Shot and 18th Roses, {{ eighteenthShotsName || eighteenthRosesName }}!
+        </p>
 
         <p v-else-if="attendance === 'Yes' && personalInfo.position === ''" class="invitation-text">
             Welcome to the party!
@@ -187,7 +192,11 @@ const findPerson = () => {
   // Optional: If you want a combined position when found in both
   if (personAsCandle && personAsRose) {
     personalInfo.position = 'One of the 18th candles and 18th Roses';
-  } else if (personAsCandle) {
+  } else if (personAsShots && personAsRose) {
+    personalInfo.position = 'One of the 18th Shot and 18th Roses';
+  }
+  
+  else if (personAsCandle) {
       personalInfo.position = 'One of the 18th candles';
   } else if (personAsRose) {
       personalInfo.position = 'One of the 18th Roses';
