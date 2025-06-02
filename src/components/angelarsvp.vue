@@ -336,29 +336,28 @@ body {
   color: #660033;
   min-height: 100vh;
   display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
-  padding: 2rem;
-  overflow: hidden; /* Prevent scrollbar issues with animations */
+  justify-content: center;
+  align-items: center;
+  padding: 1rem; /* Adjusted padding for smaller screens by default */
+  overflow-x: hidden; /* Prevent horizontal scrollbar on small screens */
 }
 
 .container {
   background: #ffd2e4cc;
-  max-width: 450px;
-  width: 100%;
+  max-width: 450px; /* Base max-width for larger screens */
+  width: 100%; /* Ensures it takes full width on smaller screens */
   border-radius: 20px;
   box-shadow:
     0 0 15px 5px rgba(255, 192, 203, 0.25),
     0 0 30px 10px rgba(255, 182, 193, 0.3);
-  padding: 2.5rem 2rem 3rem 2rem;
+  padding: 2.5rem 2rem 3rem 2rem; /* Base padding */
   text-align: center;
   overflow: hidden;
-  transform: scale(0.95); /* Initial scale for pop-in effect */
-  opacity: 0; /* Initial opacity for fade-in */
-  animation: containerLoad 0.8s ease-out forwards; /* Animation on load */
+  transform: scale(0.95);
+  opacity: 0;
+  animation: containerLoad 0.8s ease-out forwards;
 }
 
-/* Keyframe for container loading */
 @keyframes containerLoad {
   to {
     transform: scale(1);
@@ -368,40 +367,39 @@ body {
 
 .title {
   font-family: 'Great Vibes', cursive;
-  font-size: 3.6rem;
+  font-size: 3.6rem; /* Base font size */
   color: #e60073;
   margin-bottom: 0;
   margin-top: 0;
   letter-spacing: 2px;
   text-shadow: 0 0 8px #ffffff, 0 0 15px #ffbaef;
   font-style: italic;
-  animation: textFadeIn 1s ease-out 0.3s forwards; /* Delayed fade-in for title */
+  animation: textFadeIn 1s ease-out 0.3s forwards;
   opacity: 0;
   transform: translateY(-20px);
 }
 
 .subtitle {
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1.25rem; /* Base font size */
   margin-top: 6px;
   margin-bottom: 1.8rem;
   color: #000000;
-  animation: textFadeIn 1s ease-out 0.5s forwards; /* Delayed fade-in for subtitle */
+  animation: textFadeIn 1s ease-out 0.5s forwards;
   opacity: 0;
   transform: translateY(-20px);
 }
 
 .invitation-text {
   font-family: 'Quiche', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.1rem; /* Base font size */
   margin-bottom: 1.8rem;
   color: #000000;
-  animation: textFadeIn 1s ease-out 0.7s forwards; /* Delayed fade-in for invitation text */
+  animation: textFadeIn 1s ease-out 0.7s forwards;
   opacity: 0;
   transform: translateY(-20px);
 }
 
-/* Keyframe for general text fade-in */
 @keyframes textFadeIn {
   to {
     opacity: 1;
@@ -413,12 +411,11 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  animation: formSlideIn 1s ease-out 0.9s forwards; /* Slide-in effect for form */
+  animation: formSlideIn 1s ease-out 0.9s forwards;
   opacity: 0;
   transform: translateY(20px);
 }
 
-/* Keyframe for form slide-in */
 @keyframes formSlideIn {
   to {
     opacity: 1;
@@ -438,36 +435,37 @@ input[type="text"] {
   border: 2px solid #ff99cc;
   border-radius: 15px;
   font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 input[type="text"]:focus {
   outline: none;
   border-color: #e60073;
-  box-shadow: 0 0 10px rgba(230, 0, 115, 0.6); /* Enhanced glow on focus */
+  box-shadow: 0 0 10px rgba(230, 0, 115, 0.6);
 }
 
 .radio-group {
   display: flex;
   gap: 1.5rem;
   justify-content: center;
+  flex-wrap: wrap; /* Allow radio buttons to wrap on smaller screens */
 }
 
 .radio-group label {
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease; /* Transition for label hover */
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .radio-group label:hover {
-  color: #e60073; /* Change color on hover */
-  transform: translateY(-2px); /* Slight lift on hover */
+  color: #e60073;
+  transform: translateY(-2px);
 }
 
 input[type="radio"] {
   accent-color: #e60073;
   cursor: pointer;
-  transform: scale(1.1); /* Slightly larger radio buttons */
+  transform: scale(1.1);
 }
 
 button {
@@ -479,24 +477,23 @@ button {
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(255, 0, 153, 0.6); /* Stronger initial shadow */
-  transition: all 0.3s ease; /* Smooth transition for all properties */
-  position: relative; /* Needed for pseudo-element effects */
-  overflow: hidden; /* Hide overflow for ripple effect */
+  box-shadow: 0 0 20px rgba(255, 0, 153, 0.6);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 button:hover {
   background: linear-gradient(45deg, #e60073, #ff66b3);
-  box-shadow: 0 0 30px rgba(255, 51, 153, 0.8); /* Even stronger shadow on hover */
-  transform: translateY(-3px); /* Lift button on hover */
+  box-shadow: 0 0 30px rgba(255, 51, 153, 0.8);
+  transform: translateY(-3px);
 }
 
 button:active {
-  transform: translateY(0); /* Press down effect */
-  box-shadow: 0 0 10px rgba(255, 0, 153, 0.4); /* Smaller shadow when active */
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(255, 0, 153, 0.4);
 }
 
-/* Ripple effect for button click */
 button::after {
   content: '';
   position: absolute;
@@ -514,7 +511,7 @@ button::after {
 button:active::after {
   transform: scale(200);
   opacity: 1;
-  transition: 0s; /* No transition for active state */
+  transition: 0s;
 }
 
 .thankyou-message {
@@ -522,8 +519,8 @@ button:active::after {
   font-weight: 600;
   color: #cc0066;
   margin-top: 1.6rem;
-  animation: fadeInUp 0.8s ease forwards; /* Smoother animation duration */
-  text-shadow: 0 1px 5px rgba(204, 0, 102, 0.2); /* Subtle shadow for text */
+  animation: fadeInUp 0.8s ease forwards;
+  text-shadow: 0 1px 5px rgba(204, 0, 102, 0.2);
 }
 
 @keyframes fadeInUp {
@@ -537,13 +534,12 @@ button:active::after {
   }
 }
 
-/* Dialog and related styles (kept from original, as they are already good) */
 .dialog-special-guest {
   font-size: 1.2rem;
   font-weight: bold;
   color: #e60073;
   margin-bottom: 1rem;
-  animation: pulseEffect 1.5s infinite alternate; /* Pulsing effect for special guest message */
+  animation: pulseEffect 1.5s infinite alternate;
 }
 
 @keyframes pulseEffect {
@@ -555,32 +551,6 @@ button:active::after {
     transform: scale(1.03);
     opacity: 0.9;
   }
-}
-
-.open-dialog-button {
-  background: linear-gradient(45deg, #a7f3d0, #34d399);
-  color: #065f46;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-  margin-top: 1.5rem;
-  display: inline-block;
-}
-
-.open-dialog-button:hover {
-  background: linear-gradient(45deg, #34d399, #a7f3d0);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
-
-.open-dialog-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .dialog-overlay {
@@ -595,7 +565,7 @@ button:active::after {
   justify-content: center;
   z-index: 10;
   backdrop-filter: blur(4px);
-  animation: fadeInOverlay 0.3s ease; /* Fade in for overlay */
+  animation: fadeInOverlay 0.3s ease;
 }
 
 @keyframes fadeInOverlay {
@@ -614,8 +584,8 @@ button:active::after {
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   width: 90%;
-  max-width: 500px;
-  animation: dialogPopIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Pop-in effect for dialog */
+  max-width: 500px; /* Base max-width for dialog */
+  animation: dialogPopIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 }
 
 @keyframes dialogPopIn {
@@ -630,7 +600,7 @@ button:active::after {
 }
 
 .dialog-title {
-  font-size: 2rem;
+  font-size: 2rem; /* Base font size */
   font-family: 'Great Vibes', cursive;
   color: #f5889f;
   margin-bottom: 1rem;
@@ -638,59 +608,138 @@ button:active::after {
 }
 
 .dialog-description {
-  font-size: 1.1rem;
+  font-size: 1.1rem; /* Base font size */
   color: #6b7280;
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }
 .dialog-additional-info {
-  font-size: 1rem;
+  font-size: 1rem; /* Base font size */
   color: #660033;
   margin-bottom: 1.5rem;
   font-style: italic;
 }
 
-.dialog-close-button {
-  background: linear-gradient(to bottom, #f87171, #dc2626);
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
+/* --- Media Queries for Responsiveness --- */
 
-.dialog-close-button:hover {
-  background: linear-gradient(to bottom, #ef4444, #b91c1c);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-  transform: translateY(-2px);
-}
-
-.dialog-close-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 500px) {
+/* For screens smaller than 768px (e.g., tablets in portrait, large phones) */
+@media (max-width: 768px) {
   .container {
-    max-width: 95vw;
-    padding: 2rem 1.5rem 2.5rem 1.5rem;
+    padding: 2rem 1.8rem 2.5rem 1.8rem; /* Slightly reduced padding */
+    max-width: 400px; /* Slightly smaller max-width */
   }
   .title {
-    font-size: 2.8rem;
+    font-size: 3.2rem; /* Adjust title size */
+  }
+  .subtitle {
+    font-size: 1.15rem; /* Adjust subtitle size */
+  }
+  .invitation-text {
+    font-size: 1rem; /* Adjust text size */
+  }
+  .dialog-content {
+    max-width: 450px; /* Keep dialog slightly smaller */
+  }
+  .dialog-title {
+    font-size: 1.8rem;
+  }
+  .dialog-description {
+    font-size: 1rem;
+  }
+}
+
+/* For screens smaller than 500px (typical mobile phones) */
+@media (max-width: 500px) {
+  body {
+    padding: 0.8rem; /* Even less padding around the body */
+  }
+  .container {
+    max-width: 95vw; /* Allow container to be almost full width */
+    padding: 1.8rem 1.2rem 2.2rem 1.2rem; /* More reduced padding */
+    border-radius: 15px; /* Slightly smaller border-radius */
+  }
+  .title {
+    font-size: 2.8rem; /* Further reduce title size */
+  }
+  .subtitle {
+    font-size: 1rem; /* Further reduce subtitle size */
+  }
+  .invitation-text {
+    font-size: 0.95rem; /* Further reduce invitation text size */
+  }
+  label {
+    font-size: 0.95rem;
+  }
+  input[type="text"] {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+  }
+  .radio-group {
+    flex-direction: column; /* Stack radio buttons vertically */
+    gap: 0.8rem; /* Reduce gap when stacked */
+    align-items: flex-start; /* Align stacked radios to the left */
+  }
+  .radio-group label {
+    font-size: 0.95rem;
+  }
+  button {
+    font-size: 1.05rem; /* Slightly smaller button font */
+    padding: 0.8rem 0;
+  }
+  .thankyou-message {
+    font-size: 1.1rem; /* Adjust thank you message size */
   }
   .dialog-content {
     padding: 1.5rem;
+    border-radius: 1rem;
   }
   .dialog-title {
     font-size: 1.75rem;
   }
   .dialog-description {
+    font-size: 0.95rem;
+  }
+  .dialog-additional-info {
+    font-size: 0.9rem;
+  }
+}
+
+/* For very small screens (e.g., iPhone SE/mini) */
+@media (max-width: 375px) {
+  .container {
+    padding: 1.5rem 1rem 1.8rem 1rem;
+  }
+  .title {
+    font-size: 2.4rem;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  .invitation-text {
+    font-size: 0.85rem;
+  }
+  label {
+    font-size: 0.9rem;
+  }
+  input[type="text"] {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  button {
     font-size: 1rem;
+    padding: 0.7rem 0;
+  }
+  .thankyou-message {
+    font-size: 1rem;
+  }
+  .dialog-content {
+    padding: 1.2rem;
+  }
+  .dialog-title {
+    font-size: 1.5rem;
+  }
+  .dialog-description {
+    font-size: 0.9rem;
   }
 }
 </style>
