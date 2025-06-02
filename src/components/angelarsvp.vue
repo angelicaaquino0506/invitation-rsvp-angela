@@ -655,7 +655,7 @@ button:active::after {
 }
 
 /* For screens smaller than 500px (typical mobile phones) */
-@media (max-width: 500px) {
+@media (max-width: 300px) {
   body {
     padding: 0; /* Remove body padding on small screens to give full space to container */
   }
