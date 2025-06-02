@@ -335,27 +335,33 @@ body {
   background: linear-gradient(135deg, #ffe6f0 0%, #ffcce3 100%);
   color: #660033;
   min-height: 100vh;
+  /* Ensure full viewport height */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem; /* Adjusted padding for smaller screens by default */
+  justify-content: center; /* Centers horizontally */
+  align-items: center;     /* Centers vertically */
+  /* Remove padding from body to let container handle its own spacing */
+  /* padding: 1rem; */ /* Remove or set to 0 if you want strict centering */
   overflow-x: hidden; /* Prevent horizontal scrollbar on small screens */
 }
 
 .container {
   background: #ffd2e4cc;
-  max-width: 450px; /* Base max-width for larger screens */
-  width: 100%; /* Ensures it takes full width on smaller screens */
+  max-width: 450px;
+  width: 100%;
   border-radius: 20px;
   box-shadow:
     0 0 15px 5px rgba(255, 192, 203, 0.25),
     0 0 30px 10px rgba(255, 182, 193, 0.3);
-  padding: 2.5rem 2rem 3rem 2rem; /* Base padding */
+  padding: 2.5rem 2rem 3rem 2rem; /* Maintain container's internal padding */
   text-align: center;
   overflow: hidden;
   transform: scale(0.95);
   opacity: 0;
   animation: containerLoad 0.8s ease-out forwards;
+
+  /* Add margin auto for block-level centering when it doesn't fill the flex container */
+  /* While display:flex on body usually handles this, margin:auto adds robustness */
+  margin: auto;
 }
 
 @keyframes containerLoad {
@@ -367,7 +373,7 @@ body {
 
 .title {
   font-family: 'Great Vibes', cursive;
-  font-size: 3.6rem; /* Base font size */
+  font-size: 3.6rem;
   color: #e60073;
   margin-bottom: 0;
   margin-top: 0;
@@ -381,7 +387,7 @@ body {
 
 .subtitle {
   font-weight: 600;
-  font-size: 1.25rem; /* Base font size */
+  font-size: 1.25rem;
   margin-top: 6px;
   margin-bottom: 1.8rem;
   color: #000000;
@@ -392,7 +398,7 @@ body {
 
 .invitation-text {
   font-family: 'Quiche', sans-serif;
-  font-size: 1.1rem; /* Base font size */
+  font-size: 1.1rem;
   margin-bottom: 1.8rem;
   color: #000000;
   animation: textFadeIn 1s ease-out 0.7s forwards;
@@ -447,7 +453,7 @@ input[type="text"]:focus {
   display: flex;
   gap: 1.5rem;
   justify-content: center;
-  flex-wrap: wrap; /* Allow radio buttons to wrap on smaller screens */
+  flex-wrap: wrap;
 }
 
 .radio-group label {
@@ -584,7 +590,7 @@ button:active::after {
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   width: 90%;
-  max-width: 500px; /* Base max-width for dialog */
+  max-width: 500px;
   animation: dialogPopIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 }
 
@@ -600,7 +606,7 @@ button:active::after {
 }
 
 .dialog-title {
-  font-size: 2rem; /* Base font size */
+  font-size: 2rem;
   font-family: 'Great Vibes', cursive;
   color: #f5889f;
   margin-bottom: 1rem;
@@ -608,13 +614,13 @@ button:active::after {
 }
 
 .dialog-description {
-  font-size: 1.1rem; /* Base font size */
+  font-size: 1.1rem;
   color: #6b7280;
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }
 .dialog-additional-info {
-  font-size: 1rem; /* Base font size */
+  font-size: 1rem;
   color: #660033;
   margin-bottom: 1.5rem;
   font-style: italic;
@@ -625,20 +631,20 @@ button:active::after {
 /* For screens smaller than 768px (e.g., tablets in portrait, large phones) */
 @media (max-width: 768px) {
   .container {
-    padding: 2rem 1.8rem 2.5rem 1.8rem; /* Slightly reduced padding */
-    max-width: 400px; /* Slightly smaller max-width */
+    padding: 2rem 1.8rem 2.5rem 1.8rem;
+    /* max-width: 400px; - Removed, let width:100% handle this within padding */
   }
   .title {
-    font-size: 3.2rem; /* Adjust title size */
+    font-size: 3.2rem;
   }
   .subtitle {
-    font-size: 1.15rem; /* Adjust subtitle size */
+    font-size: 1.15rem;
   }
   .invitation-text {
-    font-size: 1rem; /* Adjust text size */
+    font-size: 1rem;
   }
   .dialog-content {
-    max-width: 450px; /* Keep dialog slightly smaller */
+    max-width: 450px;
   }
   .dialog-title {
     font-size: 1.8rem;
@@ -651,21 +657,26 @@ button:active::after {
 /* For screens smaller than 500px (typical mobile phones) */
 @media (max-width: 500px) {
   body {
-    padding: 0.8rem; /* Even less padding around the body */
+    padding: 0; /* Remove body padding on small screens to give full space to container */
   }
   .container {
-    max-width: 95vw; /* Allow container to be almost full width */
-    padding: 1.8rem 1.2rem 2.2rem 1.2rem; /* More reduced padding */
-    border-radius: 15px; /* Slightly smaller border-radius */
+    max-width: 100vw; /* Take full viewport width */
+    padding: 1.8rem 1.2rem 2.2rem 1.2rem;
+    border-radius: 0; /* Optional: Make corners sharp on full-width mobile */
+    min-height: 100vh; /* Make container take full height on small screens */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically within container */
+    align-items: center; /* Center content horizontally within container */
   }
   .title {
-    font-size: 2.8rem; /* Further reduce title size */
+    font-size: 2.8rem;
   }
   .subtitle {
-    font-size: 1rem; /* Further reduce subtitle size */
+    font-size: 1rem;
   }
   .invitation-text {
-    font-size: 0.95rem; /* Further reduce invitation text size */
+    font-size: 0.95rem;
   }
   label {
     font-size: 0.95rem;
@@ -675,19 +686,19 @@ button:active::after {
     font-size: 0.9rem;
   }
   .radio-group {
-    flex-direction: column; /* Stack radio buttons vertically */
-    gap: 0.8rem; /* Reduce gap when stacked */
-    align-items: flex-start; /* Align stacked radios to the left */
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: flex-start;
   }
   .radio-group label {
     font-size: 0.95rem;
   }
   button {
-    font-size: 1.05rem; /* Slightly smaller button font */
+    font-size: 1.05rem;
     padding: 0.8rem 0;
   }
   .thankyou-message {
-    font-size: 1.1rem; /* Adjust thank you message size */
+    font-size: 1.1rem;
   }
   .dialog-content {
     padding: 1.5rem;
