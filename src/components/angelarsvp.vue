@@ -189,6 +189,15 @@ const findPerson = () => {
     }
   }
 
+  if (personAsShots) {
+    isEighteenthRoses.value = true;
+    eighteenthShotsName.value = personAsShots.name;
+
+    if (!personAsCandle) { 
+      personalInfo.position = 'One of the 18th Roses';
+    }
+  }
+
   // Optional: If you want a combined position when found in both
   if (personAsCandle && personAsRose) {
     personalInfo.position = 'One of the 18th candles and 18th Roses';
