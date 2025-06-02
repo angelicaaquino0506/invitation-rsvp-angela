@@ -322,285 +322,375 @@ onMounted(() => {
   fetchUsers();
 });
 </script>
-  
-  <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap');
-  
-  /* Reset */
-  * {
-    box-sizing: border-box;
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap');
+
+/* Reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #ffe6f0 0%, #ffcce3 100%);
+  color: #660033;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  padding: 2rem;
+  overflow: hidden; /* Prevent scrollbar issues with animations */
+}
+
+.container {
+  background: #ffd2e4cc;
+  max-width: 450px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow:
+    0 0 15px 5px rgba(255, 192, 203, 0.25),
+    0 0 30px 10px rgba(255, 182, 193, 0.3);
+  padding: 2.5rem 2rem 3rem 2rem;
+  text-align: center;
+  overflow: hidden;
+  transform: scale(0.95); /* Initial scale for pop-in effect */
+  opacity: 0; /* Initial opacity for fade-in */
+  animation: containerLoad 0.8s ease-out forwards; /* Animation on load */
+}
+
+/* Keyframe for container loading */
+@keyframes containerLoad {
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
-  
-  body {
-    margin: 0;
-    /* font-family: 'Poppins', sans-serif; */
-    background: linear-gradient(135deg, #ffe6f0 0%, #ffcce3 100%);
-    color: #660033;
-    /* min-height: 100vh; */
-    min-height: 100vh;
-    display: flex;
-    padding: 2rem;
-  }
-  
-  .container {
-    /* background: #ffd2e4cc; */
-    background: #ffd2e4cc;
-    max-width: 450px;
-    width: 100%;
-    border-radius: 20px;
-    box-shadow:
-      0 0 15px 5px rgba(255, 192, 203, 0.25),
-      0 0 30px 10px rgba(255, 182, 193, 0.3);
-    padding: 2.5rem 2rem 3rem 2rem;
-    text-align: center;
-    overflow: hidden;
-    
-  
-  }
-  
-  .title {
-    font-family: 'Great Vibes', cursive;
-    /* font-family: 'Halimun', cursive; */
-    font-size: 3.6rem;
-    color: #e60073;
-    margin-bottom: 0;
-    margin-top: 0;
-    letter-spacing: 2px;
-    text-shadow: 0 0 8px #ffffff, 0 0 15px #ffbaef;
-    font-style: italic; 
-  }
-  .subtitle {
-    font-weight: 600;
-    font-size: 1.25rem;
-    margin-top: 6px;
-    margin-bottom: 1.8rem;
-    color: #000000;
-  }
-  
-  .invitation-text {
-    /* Quiche  */
-    /* font-family: 'Quiche', cursive; */
-    font-family: 'Quiche', sans-serif; 
-    font-size: 1.1rem;
-    margin-bottom: 1.8rem;
-    /* font-style: italic; */
-    color: #000000;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-  
-  label {
-    font-weight: 600;
-    font-size: 1rem;
-    color: #660033;
-    text-align: left;
-  }
-  
-  input[type="text"] {
-    padding: 0.8rem 1rem;
-    border: 2px solid #ff99cc;
-    border-radius: 15px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-  input[type="text"]:focus {
-    outline: none;
-    border-color: #e60073;
-    box-shadow: 0 0 10px #e60073;
-  }
-  
-  .radio-group {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-  }
-  
-  .radio-group label {
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  input[type="radio"] {
-    accent-color: #e60073;
-    cursor: pointer;
-  }
-  
-  button {
-    background: linear-gradient(45deg, #ff66b3, #e60073);
-    color: white;
-    font-weight: 700;
-    font-size: 1.15rem;
-    padding: 0.9rem 0;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    box-shadow: 0 0 20px #ff0099aa;
-    transition: background 0.3s ease;
-  }
-  button:hover {
-    background: linear-gradient(45deg, #e60073, #ff66b3);
-  }
-  button:focus {
-    outline: none;
-    box-shadow: 0 0 30px #ff3399;
-  }
-  
-  .thankyou-message {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #cc0066;
-    margin-top: 1.6rem;
-    animation: fadeInUp 1s ease forwards;
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* New styles for the dialog */
-  .open-dialog-button {
-    background: linear-gradient(45deg, #a7f3d0, #34d399); /* Tailwind colors, light to dark teal */
-    color: #065f46; /* Darker text for contrast */
-    font-weight: 600; /* Make the text bold */
-    font-size: 1rem;
-    padding: 0.75rem 1.5rem; /* Slightly adjusted padding */
-    border: none;
-    border-radius: 1.5rem; /* More rounded corners */
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Softer shadow */
-    transition: all 0.3s ease; /* Smooth transition for all properties */
-    margin-top: 1.5rem;
-    display: inline-block; /* Ensure proper spacing */
-  }
-  
-  .open-dialog-button:hover {
-    background: linear-gradient(45deg, #34d399, #a7f3d0); /* Reverse gradient on hover */
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); /* Increased shadow on hover */
-    transform: translateY(-2px); /* Slight lift on hover */
-  }
-  
-  .open-dialog-button:active {
-    transform: translateY(0); /* No lift when active/pressed */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Smaller shadow when active */
-  }
-  
-  
-  .dialog-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    backdrop-filter: blur(4px); /* Add blur to the background */
-  }
-  
-  .dialog-content {
-    background-color: #ffffff;
-    border-radius: 1rem;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow */
-    width: 90%; /* Responsive width */
-    max-width: 500px; /* Maximum width */
-    animation: fadeIn 0.3s ease; /* Simple fade-in animation */
-    transform: translateY(-20px);
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to{
-      opacity: 1;
-    }
-  }
-  
-  .dialog-title {
-    font-size: 2rem;
-    font-family: 'Great Vibes', cursive;
-    color: #f5889f;
-    margin-bottom: 1rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  .dialog-description {
-    font-size: 1.1rem;
-    color: #6b7280;
-    margin-bottom: 1.5rem;
-    line-height: 1.6; /* Improved line height for readability */
-  }
-  .dialog-additional-info{
-    font-size: 1rem;
-    color: #660033;
-    margin-bottom: 1.5rem;
-    font-style: italic;
-  }
-  
-  .dialog-special-guest {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #e60073;
-    margin-bottom: 1rem;
-  }
-  
-  .dialog-close-button {
-    background: linear-gradient(to bottom, #f87171, #dc2626); /* Gradient: light red to dark red */
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 1.5rem; /* Fully rounded corners */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  }
-  
-  .dialog-close-button:hover {
-    background: linear-gradient(to bottom, #ef4444, #b91c1c); /* Slightly lighter/darker on hover */
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-    transform: translateY(-2px);
-  }
-  
-  .dialog-close-button:active {
+}
+
+.title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.6rem;
+  color: #e60073;
+  margin-bottom: 0;
+  margin-top: 0;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #ffffff, 0 0 15px #ffbaef;
+  font-style: italic;
+  animation: textFadeIn 1s ease-out 0.3s forwards; /* Delayed fade-in for title */
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.subtitle {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-top: 6px;
+  margin-bottom: 1.8rem;
+  color: #000000;
+  animation: textFadeIn 1s ease-out 0.5s forwards; /* Delayed fade-in for subtitle */
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.invitation-text {
+  font-family: 'Quiche', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 1.8rem;
+  color: #000000;
+  animation: textFadeIn 1s ease-out 0.7s forwards; /* Delayed fade-in for invitation text */
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* Keyframe for general text fade-in */
+@keyframes textFadeIn {
+  to {
+    opacity: 1;
     transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
-  
-  
-  @media (max-width: 500px) {
-    .container {
-      max-width: 95vw;
-      padding: 2rem 1.5rem 2.5rem 1.5rem;
-    }
-    .title {
-      font-size: 2.8rem;
-    }
-    .dialog-content{
-      padding: 1.5rem;
-    }
-    .dialog-title{
-      font-size: 1.75rem;
-    }
-    .dialog-description{
-      font-size: 1rem;
-    }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: formSlideIn 1s ease-out 0.9s forwards; /* Slide-in effect for form */
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Keyframe for form slide-in */
+@keyframes formSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  </style>
+}
+
+label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #660033;
+  text-align: left;
+}
+
+input[type="text"] {
+  padding: 0.8rem 1rem;
+  border: 2px solid #ff99cc;
+  border-radius: 15px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus */
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: #e60073;
+  box-shadow: 0 0 10px rgba(230, 0, 115, 0.6); /* Enhanced glow on focus */
+}
+
+.radio-group {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.radio-group label {
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease; /* Transition for label hover */
+}
+
+.radio-group label:hover {
+  color: #e60073; /* Change color on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+input[type="radio"] {
+  accent-color: #e60073;
+  cursor: pointer;
+  transform: scale(1.1); /* Slightly larger radio buttons */
+}
+
+button {
+  background: linear-gradient(45deg, #ff66b3, #e60073);
+  color: white;
+  font-weight: 700;
+  font-size: 1.15rem;
+  padding: 0.9rem 0;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 0, 153, 0.6); /* Stronger initial shadow */
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  position: relative; /* Needed for pseudo-element effects */
+  overflow: hidden; /* Hide overflow for ripple effect */
+}
+
+button:hover {
+  background: linear-gradient(45deg, #e60073, #ff66b3);
+  box-shadow: 0 0 30px rgba(255, 51, 153, 0.8); /* Even stronger shadow on hover */
+  transform: translateY(-3px); /* Lift button on hover */
+}
+
+button:active {
+  transform: translateY(0); /* Press down effect */
+  box-shadow: 0 0 10px rgba(255, 0, 153, 0.4); /* Smaller shadow when active */
+}
+
+/* Ripple effect for button click */
+button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1);
+  transition: all 0.5s ease-out;
+}
+
+button:active::after {
+  transform: scale(200);
+  opacity: 1;
+  transition: 0s; /* No transition for active state */
+}
+
+.thankyou-message {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #cc0066;
+  margin-top: 1.6rem;
+  animation: fadeInUp 0.8s ease forwards; /* Smoother animation duration */
+  text-shadow: 0 1px 5px rgba(204, 0, 102, 0.2); /* Subtle shadow for text */
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dialog and related styles (kept from original, as they are already good) */
+.dialog-special-guest {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #e60073;
+  margin-bottom: 1rem;
+  animation: pulseEffect 1.5s infinite alternate; /* Pulsing effect for special guest message */
+}
+
+@keyframes pulseEffect {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.03);
+    opacity: 0.9;
+  }
+}
+
+.open-dialog-button {
+  background: linear-gradient(45deg, #a7f3d0, #34d399);
+  color: #065f46;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  margin-top: 1.5rem;
+  display: inline-block;
+}
+
+.open-dialog-button:hover {
+  background: linear-gradient(45deg, #34d399, #a7f3d0);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.open-dialog-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  animation: fadeInOverlay 0.3s ease; /* Fade in for overlay */
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dialog-content {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  animation: dialogPopIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Pop-in effect for dialog */
+}
+
+@keyframes dialogPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.dialog-title {
+  font-size: 2rem;
+  font-family: 'Great Vibes', cursive;
+  color: #f5889f;
+  margin-bottom: 1rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-description {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.dialog-additional-info {
+  font-size: 1rem;
+  color: #660033;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.dialog-close-button {
+  background: linear-gradient(to bottom, #f87171, #dc2626);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.dialog-close-button:hover {
+  background: linear-gradient(to bottom, #ef4444, #b91c1c);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.dialog-close-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 500px) {
+  .container {
+    max-width: 95vw;
+    padding: 2rem 1.5rem 2.5rem 1.5rem;
+  }
+  .title {
+    font-size: 2.8rem;
+  }
+  .dialog-content {
+    padding: 1.5rem;
+  }
+  .dialog-title {
+    font-size: 1.75rem;
+  }
+  .dialog-description {
+    font-size: 1rem;
+  }
+}
+</style>
