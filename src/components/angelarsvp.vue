@@ -23,19 +23,24 @@
           You are one of the 18 candles, {{ eighteenthCandleName }}!
         </p> -->
 
-        <p v-if="personalInfo.position === 'One of the 18 candles' && attendance === 'Yes'"
+        <p v-if="personalInfo.position === 'One of the 18th candles' && attendance === 'Yes'"
           class="invitation-text dialog-special-guest">
-          You are one of the 18 candles, {{ eighteenthCandleName }}!
+          You are one of the 18th candles, {{ eighteenthCandleName }}!
         </p>
 
-        <p v-else-if="personalInfo.position === 'One of the 18 Roses' && attendance === 'Yes'"
+        <p v-else-if="personalInfo.position === 'One of the 18th Roses' && attendance === 'Yes'"
           class="invitation-text dialog-special-guest">
-          You are one of the 18 Roses, {{ eighteenthRosesName }}!
+          You are one of the 18th Roses, {{ eighteenthRosesName }}!
         </p>
 
-        <p v-else-if="personalInfo.position === 'One of the 18 candles and 18 Roses' && attendance === 'Yes'"
+        <p v-else-if="personalInfo.position === 'One of the 18th Shots' && attendance === 'Yes'"
           class="invitation-text dialog-special-guest">
-          You are one of the 18 candles and 18 Roses, {{ eighteenthCandleName || eighteenthRosesName }}!
+          You are one of the 18th Shots, {{ eighteenthShotsName }}!
+        </p>
+
+        <p v-else-if="personalInfo.position === 'One of the 18th candles and 18th Roses' && attendance === 'Yes'"
+          class="invitation-text dialog-special-guest">
+          You are one of the 18th candles and 18th Roses, {{ eighteenthCandleName || eighteenthRosesName }}!
           </p>
 
         <p v-else-if="attendance === 'Yes' && personalInfo.position === ''" class="invitation-text">
@@ -63,6 +68,8 @@ import { db } from '@/firebase';
 const name = ref<string>('');
 const attendance = ref<string>('');
 const thankYouMessage = ref<string>('');
+
+// 18th Candel
 const eighteenCandel = ref<{ name: string; value: string }[]>([
   { name: 'Ms. Angelica Aquino', value: 'Angelica Aquino' },
   { name: 'Mrs. Marlyn Aquino', value: 'Marlyn Aquino' },
@@ -79,34 +86,61 @@ const eighteenCandel = ref<{ name: string; value: string }[]>([
   { name: 'Ms. Mila Ansagay', value: 'Mila Ansagay' },
   { name: 'Dra. Weng Catanaoan', value: 'Weng Catanaoan' },
   { name: 'Mrs. Rowena Datinginoo', value: 'Rowena Datinginoo' },
-  { name: 'Ms. Ma. Zarah Muli', value: 'Zarah Muli' },
+  { name: 'Mr. Ma. Zarah Muli', value: 'Zarah Muli' },
   { name: 'Mrs. Thelma Muli', value: 'Thelma Muli' },
   { name: 'Mr. Angelo Muli', value: 'Angelo Muli' },
 ]);
+
+// 18th Roses
 const eighteeRoses = ref<{ name: string; value: string }[]>([
   { name: 'Mr. Arjay magno', value: 'Arjay magno' },
   { name: 'Mr. Reynaldo Aquino', value: 'Reynaldo Aquino' },
   { name: 'Mr. Renz Gonzales', value: 'Renz Gonzales' },
-  { name: 'Mr. Ronald Villio', value: 'Ronald Villio' },
+  { name: 'Mr. Ronald Villo', value: 'Ronald Villo' },
   { name: 'Mr. Efren Rodriguez', value: 'Efren Rodriguez' },
   { name: 'Mr. Ralph Louren Cincua', value: 'Ralph Louren Cincua' },
   { name: 'Mr. Wingard Baraquiel', value: 'Wingard Baraquiel' },
+  { name: 'Mr. Jemuel Hisita', value: 'Jemuel Hisita' },
   { name: 'Mr. Rexie Van Galanta', value: 'Rexie Van Galanta' },
   { name: 'Mr. John Lumbis', value: 'John Lumbis' },
   { name: 'Mr. Aaron Josh Corbita', value: 'Aaron Josh Corbita' },
   { name: 'Mr. Marvy James Bayani', value: 'Marvy James Bayani' },
-  { name: 'Mr. Jhon Ryan Dellosmas', value: 'Jhon Ryan Dellosmas' },
-  { name: 'Mr. Wilfredo Andres', value: 'Wilfredo Andres' },
-  { name: 'Mr. Jasper Panganiban', value: 'Jasper Panganiban' },
+  { name: 'Mr. Jhon Ryan Dellomas', value: 'Jhon Ryan Dellomas' },
+  { name: 'Mr. Wilredo Andres', value: 'Wilredo Andres' },
   { name: 'Mr. Prince Charles Giron', value: 'Prince Charles Giron' },
-  { name: 'Ms. Ma. Zarah Muli', value: 'Zarah Muli' },
+  { name: 'Ms. Jestoni Cabezas', value: 'Jestoni Cabezas' },
   { name: 'Mrs. Maria Thelma Muli', value: 'Maria Thelma Muli' },
   { name: 'Mr. Angelo Muli', value: 'Angelo Muli' },
 ]);
+
+// 18th Shot
+const eighteenShots = ref<{ name: string; value: string }[]>([
+  { name: 'Ms. Daphne Asombrado', value: 'Daphne Asombrado' },
+  { name: 'Ms. Renoakyle Alcantara', value: 'Renoakyle Alcantara' },
+  { name: 'Ms. Chelsy Llorca', value: 'Chelsy Llorca' },
+  { name: 'Ms. Brillian Vertudes', value: 'Brillian Vertudes' },
+  { name: 'Ms. Jhon Ryan Dellomas', value: 'Jhon Ryan Dellomas' },
+  { name: 'Ms. Rhiangelie Sinsoro', value: 'Rhiangelie Sinsoro' },
+  { name: 'Ms. Shermaine Leoperio', value: 'Shermaine Leoperio' },
+  { name: 'Ms. Angeline Lolin', value: 'Angeline Lolin' },
+  { name: 'Ms. Brydhe Ganub', value: 'Brydhe Ganub' },
+  { name: 'Ms. Ferleene Monog', value: 'Ferleene Monog' },
+  { name: 'Ms. Stephanie Bangit', value: 'Stephanie Bangit' },
+  { name: 'Ms. Rexie Van Galanta', value: 'Rexie Van Galanta' },
+  { name: 'Ms. Mariel Panganiban', value: 'Mariel Panganiban' },
+  { name: 'Ms. Frinces Aron', value: 'Frinces Aron' },
+  { name: 'Ms. Queency Basilan', value: 'Queency Basilan' },
+  { name: 'Ms. Dhanice Atibula', value: 'Dhanice Atibula' },
+  { name: 'Ms. Charline Muello', value: 'Charline Muello' },
+  { name: 'Mr. Xyra Gail Camaje', value: 'Xyra Gail Camaje' },
+]);
+
 const isEighteenthCandle = ref<boolean>(false);
 const eighteenthCandleName = ref<string>('');
 const isEighteenthRoses = ref<boolean>(false);
 const eighteenthRosesName = ref<string>('');
+const isEighteenthShots = ref<boolean>(false);
+const eighteenthShotsName = ref<string>('');
 
 // Reactive object to hold the data to be saved to Firebase
 const personalInfo = reactive({
@@ -115,31 +149,7 @@ const personalInfo = reactive({
   position: ''
 });
 
-// Function to find if the entered name is one of the 18 candles
-// const findPerson = () => {
-//   const inputNameLower = name.value.toLowerCase();
-//   const person = eighteenCandel.value.find(r => r.value.toLowerCase().includes(inputNameLower));
-//   const person18Roses = eighteeRoses.value.find(r => r.value.toLowerCase().includes(inputNameLower));
 
-//   if (person) {
-//     isEighteenthCandle.value = true;
-//     eighteenthCandleName.value = person.name;
-//     personalInfo.position = 'One of the 18 candles';
-//   } else {
-//     isEighteenthCandle.value = false;
-//     eighteenthCandleName.value = '';
-//     personalInfo.position = '';
-//   }
-//   if (person18Roses) {
-//     isEighteenthRoses.value = true;
-//     eighteenthRosesName.value = person18Roses.name;
-//     personalInfo.position = 'One of the 18 Roses';
-//   } else {
-//     isEighteenthRoses.value = false;
-//     eighteenthRosesName.value = '';
-//     personalInfo.position = '';
-//   }
-// };
 
 const findPerson = () => {
   const inputNameLower = name.value.toLowerCase();
@@ -147,40 +157,42 @@ const findPerson = () => {
   // Find in both lists independently
   const personAsCandle = eighteenCandel.value.find(r => r.value.toLowerCase().includes(inputNameLower));
   const personAsRose = eighteeRoses.value.find(r => r.value.toLowerCase().includes(inputNameLower));
+  const personAsShots = eighteenShots.value.find(r => r.value.toLowerCase().includes(inputNameLower));
 
   // --- Reset all relevant values first ---
   isEighteenthCandle.value = false;
   eighteenthCandleName.value = '';
   isEighteenthRoses.value = false;
   eighteenthRosesName.value = '';
+  isEighteenthShots.value = false;
+  eighteenthShotsName.value = '';
   personalInfo.position = ''; // Always reset position
 
   // --- Determine position and set flags ---
   if (personAsCandle) {
     isEighteenthCandle.value = true;
     eighteenthCandleName.value = personAsCandle.name;
-    personalInfo.position = 'One of the 18 candles';
+    personalInfo.position = 'One of the 18th candles';
   }
 
   if (personAsRose) {
     isEighteenthRoses.value = true;
     eighteenthRosesName.value = personAsRose.name;
-    // If the person was also a candle, and you want 'Roses' to override
-    // or if the person is only a rose.
-    // If you want 'Candle' to take precedence for personalInfo.position,
-    // then you might want to put this 'else if' or handle it differently.
-    if (!personAsCandle) { // Only update position if not already set by a candle
-      personalInfo.position = 'One of the 18 Roses';
+
+    if (!personAsCandle) { 
+      personalInfo.position = 'One of the 18th Roses';
     }
   }
 
   // Optional: If you want a combined position when found in both
   if (personAsCandle && personAsRose) {
-    personalInfo.position = 'One of the 18 candles and 18 Roses';
+    personalInfo.position = 'One of the 18th candles and 18th Roses';
   } else if (personAsCandle) {
-      personalInfo.position = 'One of the 18 candles';
+      personalInfo.position = 'One of the 18th candles';
   } else if (personAsRose) {
-      personalInfo.position = 'One of the 18 Roses';
+      personalInfo.position = 'One of the 18th Roses';
+  } else if (personAsShots) {
+      personalInfo.position = 'One of the 18th Shots';
   }
 };
 
