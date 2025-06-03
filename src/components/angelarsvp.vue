@@ -78,7 +78,7 @@ const thankYouMessage = ref<string>('');
 const eighteenCandel = ref<{ name: string; value: string }[]>([
   { name: 'Ms. Angelica Aquino', value: 'Angelica Aquino' },
   { name: 'Mrs. Marlyn Aquino', value: 'Marlyn Aquino' },
-  { name: 'Ms. Precy Aspiras', value: 'Precy Aspiras' },
+  { name: 'Ms. Percy Aspiras', value: 'Percy Aspiras' },
   { name: 'Ms. Jessica Aspiras', value: 'Jessica Aspiras' },
   { name: 'Mrs. Luisa Canales', value: 'Luisa Canales' },
   { name: 'Ms. Lourie Kay Cincua', value: 'Lourie Kay Cincua' },
